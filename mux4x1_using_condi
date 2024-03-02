@@ -1,0 +1,29 @@
+//Design Code
+module mux4x1(output out, input s1,s0,a,b,c,d);
+  assign out=s1?(s0?c:d):(s0?b:a);
+endmodule
+
+//Test Bench Code
+module test();
+  reg s1,s0,a,b,c,d;
+  wire out;
+  integer i;
+  mux4x1 dut(out,s1,s0,a,b,c,d);
+  initial
+    begin
+      for(i=0;i<64;i=i+1)
+        begin
+          {s1,s0,a,b,c,d}=i;
+          #3;
+        end
+    end
+  initial
+    begin
+      $dumpfile("test.vcd");
+      $dumpvars(1);
+    end
+  initial
+    begin
+      $monitor("time=%0t,s1=%b,s0=%b,a=%b,b=%b,c=%b,d=%b,out=%b",$time,s1,s0,a,b,c,d,out);
+    end
+endmodule
